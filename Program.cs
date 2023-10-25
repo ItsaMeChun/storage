@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-//using dotenv.net;
+using dotenv.net;
+using dotenv.net.Utilities;
 using hcode.Data;
 using hcode.Entity;
 using hcode.Repository;
@@ -30,12 +31,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+DotEnv.Load();
+// Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(EnvReader.GetStringValue("CONNECTION_STRING"));
 });
 
-var sercetKey = builder.Configuration.GetValue<string>("JWTSecretKey");
+//var sercetKey = builder.Configuration.GetValue<string>("JWTSecretKey");
+var secretKey = EnvReader.GetStringValue("JWTSecretKey");
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -44,7 +49,7 @@ builder.Services
         option.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(sercetKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey)),
             ValidateLifetime = true,
             ValidateAudience = false,
             ValidateIssuer = false,

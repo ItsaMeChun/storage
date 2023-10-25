@@ -4,6 +4,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using hcode.Entity;
+using dotenv.net;
+using dotenv.net.Utilities;
 
 namespace hcode.Utils
 {
@@ -11,17 +13,11 @@ namespace hcode.Utils
     {
         private readonly IConfiguration _configuration;
 
-        private readonly Dotenv _env;
 
         public UserSecurity(IConfiguration configuration)
         {
+            DotEnv.Load();
             this._configuration = configuration;
-        }
-
-        public UserSecurity(IConfiguration configuration, Dotenv env)
-        {
-            this._configuration = configuration;
-            this._env = env;
         }
 
         public string MD5Hash(string password)
@@ -44,8 +40,8 @@ namespace hcode.Utils
 
         public string CreateToken(Author author)
         {
-            //string secretKey = _env.GetEnvVariable("JWTSecretKey");
-            string secretKey = _configuration.GetValue<string>("JWTSecretKey");
+            string secretKey = EnvReader.GetStringValue("JWTSecretKey");
+            //string secretKey = _configuration.GetValue<string>("JWTSecretKey");
             if (secretKey == null)
             {
                 throw new ArgumentNullException();

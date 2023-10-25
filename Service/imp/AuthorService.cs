@@ -13,8 +13,6 @@ namespace hcode.Service.imp
         
         private readonly UserSecurity userSecurity;
 
-        //private readonly Dotenv _env;
-
         public AuthorService(IRepository<Author> authorRepository, IConfiguration configuration)
         {
             this._authorRepository = authorRepository;
