@@ -11,7 +11,7 @@ using hcode.Data;
 namespace hcode.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231024145631_init")]
+    [Migration("20231025043355_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +23,7 @@ namespace hcode.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("hcode.Entity.Author", b =>
+            modelBuilder.Entity("hcode.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace hcode.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Author");
+                    b.ToTable("user");
                 });
 #pragma warning restore 612, 618
         }

@@ -38,7 +38,7 @@ namespace hcode.Utils
             return string.Equals(hashPassword, hashedPassword, StringComparison.OrdinalIgnoreCase);
         }
 
-        public string CreateToken(Author author)
+        public string CreateToken(User author)
         {
             string secretKey = EnvReader.GetStringValue("JWTSecretKey");
             //string secretKey = _configuration.GetValue<string>("JWTSecretKey");

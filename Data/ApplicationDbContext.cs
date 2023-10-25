@@ -11,7 +11,13 @@ namespace hcode.Data
 
         }
 
+        public DbSet<User> user { get; set; }
         public DbSet<Author> Author { get; set; }
+        public DbSet<Sauce> Sauce { get; set; }
+        public DbSet<SauceHistory> SauceHistory { get; set; }
+        public DbSet<SauceType> SauceType { get; set; }
+        public DbSet<Types> Type { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -21,7 +21,7 @@ namespace hcode.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("hcode.Entity.Author", b =>
+            modelBuilder.Entity("hcode.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace hcode.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Author");
+                    b.ToTable("user");
                 });
 #pragma warning restore 612, 618
         }

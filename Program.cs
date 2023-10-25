@@ -65,8 +65,20 @@ builder.Services.AddAuthorization(option =>
     });
 });
 
+builder.Services.AddScoped<IRepository<User>, Repository<User>>();
 builder.Services.AddScoped<IRepository<Author>, Repository<Author>>();
+builder.Services.AddScoped<IRepository<Sauce>, Repository<Sauce>>();
+builder.Services.AddScoped<IRepository<SauceHistory>, Repository<SauceHistory>>();
+builder.Services.AddScoped<IRepository<SauceType>, Repository<SauceType>>();
+builder.Services.AddScoped<IRepository<Types>, Repository<Types>>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<ISauceService, SauceService>();
+builder.Services.AddScoped<ISauceHistoryService, SauceHistoryService>();
+builder.Services.AddScoped<ISauceTypeService, SauceTypeService>();
+builder.Services.AddScoped<ITypesService, TypeService>();
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
