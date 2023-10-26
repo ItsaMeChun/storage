@@ -12,6 +12,6 @@ namespace hcode.Entity
         [Required]
         public string Name { get; set; }
 
-        public List<SauceType> SauceTypes { get; set; }
+        public virtual ICollection<SauceType> SauceTypes { get; set; }
     }
 }

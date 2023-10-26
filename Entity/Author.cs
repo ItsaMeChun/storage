@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace hcode.Entity
@@ -12,5 +11,7 @@ namespace hcode.Entity
 
         [Required]
         public string Name { get; set; } = string.Empty;
+
+        public virtual ICollection<Sauce> Sauces { get; set;}
     }
 }

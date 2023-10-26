@@ -23,11 +23,11 @@ namespace hcode.Entity
         [Column("author_id")]
         public int AuthorId { get; set; }
 
-        public Author Author { get; set; }
+        public virtual Author Author { get; set; }
 
-        public List<SauceHistory> SauceHistory { get; set; }
+        public virtual ICollection<SauceHistory> SauceHistory { get; set; }
 
-        public List<SauceType> SauceTypes { get; set; }
+        public virtual ICollection<SauceType> SauceTypes { get; set; }
 
     }
 }
