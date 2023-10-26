@@ -17,6 +17,6 @@ namespace hcode.Entity
         [Column("sauce_id")]
         public int SauceId { get; set; }
 
-        public Sauce Sauce { get; set; }
+        public virtual Sauce Sauce { get; set; }
     }
 }

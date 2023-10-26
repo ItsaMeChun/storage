@@ -11,18 +11,12 @@ namespace hcode.Data
 
         }
 
-        public DbSet<User> user { get; set; }
-        public DbSet<Author> Author { get; set; }
-        public DbSet<Sauce> Sauce { get; set; }
-        public DbSet<SauceHistory> SauceHistory { get; set; }
-        public DbSet<SauceType> SauceType { get; set; }
-        public DbSet<Types> Type { get; set; }
-
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-
-        }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Sauce> Sauces { get; set; }
+        public DbSet<SauceHistory> SauceHistories { get; set; }
+        public DbSet<SauceType> SauceTypes { get; set; }
+        public DbSet<Types> Types { get; set; }
     }
 }
 

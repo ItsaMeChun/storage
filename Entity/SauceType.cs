@@ -13,13 +13,13 @@ namespace hcode.Entity
         [Column("type_id")]
         public int TypeId { get; set; }
 
-        public Types Type { get; set; }
+        public virtual Types Type { get; set; }
 
         [ForeignKey("Sauce")]
         [Column("sauce_id")]
         public int SauceId { get; set; }
 
-        public Sauce Sauce { get; set; }
+        public virtual Sauce Sauce { get; set; }
 
     }
 }
