@@ -29,9 +29,9 @@ namespace hcode.Controllers
         }
 
         [HttpGet("{UserId}")]
-        public IActionResult GetAuthor(int AuthorId)
+        public IActionResult GetAuthor(int UserId)
         {
-            var Author = _authorService.Get(AuthorId);
+            var Author = _authorService.Get(UserId);
             return Ok(Author);
         }
 
@@ -44,8 +44,7 @@ namespace hcode.Controllers
                 ModelState.AddModelError("AddUser", "User already exist");
                 return BadRequest(ModelState);
             }
-            User AuthorMap = _mapper.Map<User>(AuthorDTO);
-            bool result = _authorService.Add(AuthorMap);
+            bool result = _authorService.Add(AuthorDTO);
             if (!result)
             {
                 ModelState.AddModelError("AddUser", "Something went wrong");
@@ -55,9 +54,9 @@ namespace hcode.Controllers
         }
 
         [HttpPatch("UpdateUser/{UserId}")]
-        public IActionResult UpdateAuthor(int AuthorId, [FromBody] UserDTO AuthorDto)
+        public IActionResult UpdateAuthor(int UserId, [FromBody] UserDTO AuthorDto)
         {
-            bool result = _authorService.Update(AuthorId, AuthorDto);
+            bool result = _authorService.Update(UserId, AuthorDto);
             if (!result)
             {
                 ModelState.AddModelError("UpdateUser", "Something went wrong");
@@ -67,9 +66,9 @@ namespace hcode.Controllers
         }
 
         [HttpDelete("DeleteUser/{UserId}")]
-        public IActionResult DeleteAuthor(int AuthorId)
+        public IActionResult DeleteAuthor(int UserId)
         {
-            bool result = _authorService.Delete(AuthorId);
+            bool result = _authorService.Delete(UserId);
             if (!result)
             {
                 ModelState.AddModelError("DeleteUser", "Something went wrong");

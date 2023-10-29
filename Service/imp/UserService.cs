@@ -1,4 +1,5 @@
-﻿using hcode.DTO;
+﻿using AutoMapper;
+using hcode.DTO;
 using hcode.Entity;
 using hcode.Repository;
 using hcode.Utils;
@@ -10,20 +11,22 @@ namespace hcode.Service.imp
         private readonly IRepository<User> _authorRepository;
 
         private readonly IConfiguration _configuration;
-        
+        private readonly IMapper _mapper;
         private readonly UserSecurity userSecurity;
 
-        public UserService(IRepository<User> authorRepository, IConfiguration configuration)
+        public UserService(IRepository<User> authorRepository, IConfiguration configuration, IMapper mapper)
         {
             this._authorRepository = authorRepository;
             this._configuration = configuration;
+            this._mapper = mapper;
             userSecurity = new UserSecurity(_configuration);
         }
 
-        public bool Add(User author)
+        public bool Add(UserDTO author)
         {
             author.Password = userSecurity.MD5Hash(author.Password);
-            var result = _authorRepository.Add(author);
+            var authorMapper = _mapper.Map<User>(author);
+            var result = _authorRepository.Add(authorMapper);
             return result;
         }
 
