@@ -7,7 +7,7 @@ namespace hcode.Service
 {
     public interface IUserService
     {
-        bool Add(User author);
+        bool Add(UserDTO user);
 
         bool Delete(int id);
 

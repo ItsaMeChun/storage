@@ -5,11 +5,13 @@ namespace hcode.Service
 {
     public interface IAuthorService
     {
-        IEnumerable<AuthorDTO> ListAuthors();
+        IEnumerable<Author> ListAuthors();
 
         Author Get(int id);
 
-        bool Add(Author author);
+        Author FindAuthor(AuthorDTO authorDto);
+
+        bool Add(AuthorDTO author);
 
         bool Delete(int id);
 
