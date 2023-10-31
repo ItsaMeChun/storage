@@ -31,7 +31,7 @@ namespace hcode.Controllers
             if(users.IsNullOrEmpty())
             {
                 ModelState.AddModelError("Get all users", "Only you is here, no one else");
-                return BadRequest(ModelState);
+                return NotFound(ModelState);
             }
             var ShowListUsers = usersDto.Select(u => new {u.UserName, u.Email});
             return Ok(ShowListUsers);
@@ -45,7 +45,7 @@ namespace hcode.Controllers
             if(User == null)
             {
                 ModelState.AddModelError("Find User", "Can't find anyone");
-                return BadRequest(ModelState);
+                return NotFound(ModelState);
             }
             var users = new {userDto.UserName , userDto.Email};
             return Ok(users);
@@ -76,7 +76,7 @@ namespace hcode.Controllers
             if (!result)
             {
                 ModelState.AddModelError("UpdateUser", "Something went wrong");
-                return BadRequest(ModelState);
+                return NotFound(ModelState);
             }
             return Ok("User had been updated");
         }
