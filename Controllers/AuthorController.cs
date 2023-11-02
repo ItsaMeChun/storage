@@ -1,5 +1,6 @@
 ﻿using hcode.DTO;
 using hcode.Entity;
+using hcode.Models;
 using hcode.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,6 @@ namespace hcode.Controllers
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorService _authorService;
-
         public AuthorController(IAuthorService authorService)
         {
             this._authorService = authorService;
@@ -18,38 +18,52 @@ namespace hcode.Controllers
 
         [HttpGet]
         [Route("GetAuthors")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Author>))]
+        [ProducesResponseType(200, Type = typeof(ResponseModel<IEnumerable<Author>>))]
 
         public IActionResult GetAuthors()
         {
             var authors = _authorService.ListAuthors();
-            return Ok(authors);
+            var response = new ResponseModel<IEnumerable<Author>>(authors);
+            response.SuccessResponse("Complete Fetch Data");
+            return Ok(response);
         }
 
         [HttpGet]
         [Route("GetAuthor/{authorId}")]
-        [ProducesResponseType(200, Type = typeof(Author))]
+        [ProducesResponseType(200, Type = typeof(ResponseModel<Author>))]
         public IActionResult GetAuthor(int authorId)
         {
             var author = _authorService.Get(authorId);
-            return Ok(author);
+            var response = new ResponseModel<Author>(author);
+            string[] errors = { "Data response is null, user Id is not exist" };
+            if (author == null)
+            {
+                response.ErrorResponse(errors);
+                return StatusCode(404, response);
+            }
+            response.SuccessResponse("Complete Fetch Data");
+            return Ok(response);
         }
 
         [HttpPost]
         [Route("CreateAuthor")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200, Type = typeof(ResponseModel<AuthorDTO>))]
         [ProducesResponseType(400)]
         public IActionResult CreateAuthor([FromBody] AuthorDTO authorDto)
         {
+            var response = new ResponseModel<AuthorDTO>(authorDto);
             if (authorDto == null)
             {
-                return BadRequest(ModelState);
+                string[] errors = { "Data request is null" };
+                response.ErrorResponse(errors);
+                return StatusCode(406, response);
             }
             var author = _authorService.FindAuthor(authorDto);
             if (author != null)
             {
-                ModelState.AddModelError("", "Author already exists");
-                return StatusCode(422, ModelState);
+                string[] errors = { "Author already exist" };
+                response.ErrorResponse(errors);
+                return StatusCode(422, response);
             }
             if (!ModelState.IsValid)
             {
@@ -57,49 +71,63 @@ namespace hcode.Controllers
             }
             if (!_authorService.Add(authorDto))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                string[] errors = { "Something went wrong while saving" };
+                response.ErrorResponse(errors);
+                return StatusCode(500, response);
             }
-            return Ok("Successfully created");
+            response.SuccessResponse("Successfully created");
+            return Ok(response);
         }
 
         [HttpPatch]
         [Route("UpdateAuthor/{authorId}")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200, Type = typeof(ResponseModel<AuthorDTO>))]
         [ProducesResponseType(400)]
         public IActionResult UpdateAuthor(int authorId, [FromBody] AuthorDTO updateAuthorDto)
         {
+            var response = new ResponseModel<AuthorDTO>(updateAuthorDto);
             if (updateAuthorDto == null)
             {
-                return BadRequest(ModelState);
+                string[] errors = { "Data request is null" };
+                response.ErrorResponse(errors);
+                return StatusCode(406, response);
             }
             if (_authorService.Get(authorId) == null)
             {
-                return NotFound();
+                string[] errors = { "Author does not exist" };
+                response.ErrorResponse(errors);
+                return StatusCode(406, response);
             }
             if (!_authorService.Update(authorId, updateAuthorDto))
             {
-                ModelState.AddModelError("", "Something went wrong while updating");
-                return StatusCode(500, ModelState);
+                string[] errors = { "Something went wrong while updating" };
+                response.ErrorResponse(errors);
+                return StatusCode(500, response);
             }
-            return Ok("Successfully updated");
+            response.SuccessResponse("Successfully updated");
+            return Ok(response);
         }
 
         [HttpDelete("DeleteAuthor/{authorId}")]
         [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200, Type = typeof(ResponseModel<AuthorDTO>))]
         public IActionResult DeleteAuthor(int authorId)
         {
+            var response = new ResponseModel<AuthorDTO>();
             if (_authorService.Get(authorId) == null)
             {
-                return NotFound();
+                string[] errors = { "Author does not exist" };
+                response.ErrorResponse(errors);
+                return StatusCode(406, response);
             }
             if (!_authorService.Delete(authorId))
             {
-                ModelState.AddModelError("", "Something went wrong while deleting");
-                return StatusCode(500, ModelState);
+                string[] errors = { "Something went wrong while deleting" };
+                response.ErrorResponse(errors);
+                return StatusCode(500, response);
             }
-            return Ok("Successfully deleted");
+            response.SuccessResponse("Successfully deleted");
+            return Ok(response);
         }
     }
 }
