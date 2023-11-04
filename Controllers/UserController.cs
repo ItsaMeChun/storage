@@ -28,7 +28,7 @@ namespace hcode.Controllers
             var users = _userService.GetAll();
             var usersDto = _mapper.Map<IEnumerable<UserDTO>>(users);
             // i update this to avoid showing someone password
-            if(users.IsNullOrEmpty())
+            if(usersDto.IsNullOrEmpty())
             {
                 ModelState.AddModelError("Get all users", "Only you is here, no one else");
                 return NotFound(ModelState);
@@ -42,7 +42,7 @@ namespace hcode.Controllers
         {
             var User = _userService.Get(UserId);
             var userDto = _mapper.Map<UserDTO>(User);
-            if(User == null)
+            if(userDto == null)
             {
                 ModelState.AddModelError("Find User", "Can't find anyone");
                 return NotFound(ModelState);
