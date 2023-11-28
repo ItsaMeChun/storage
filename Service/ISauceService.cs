@@ -17,5 +17,8 @@ namespace hcode.Service
 
         Sauce FindSauce(SauceDTO sauceDto);
 
+        public List<SauceDTO> uploadImage(IFormFile[] files);
+
+
     }
 }

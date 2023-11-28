@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using dotenv.net;
+using dotenv.net.Utilities;
 using hcode.DTO;
 using hcode.Entity;
 using hcode.Repository;
+using Npgsql.BackendMessages;
+using System.Security.Principal;
 
 namespace hcode.Service.imp
 {
     public class SauceService : ISauceService
     {
+        private string CLOUD_URL = EnvReader.GetStringValue("CLOUD_URL");
         private readonly IRepository<Sauce> _sauceRepository;
         private readonly IMapper _mapper;
 
@@ -15,6 +20,7 @@ namespace hcode.Service.imp
             this._sauceRepository = sauceRepository;
             this._mapper = mapper;
         }
+
         public bool Add(SauceDTO sauce)
         {
             throw new NotImplementedException();
@@ -50,6 +56,24 @@ namespace hcode.Service.imp
 
         public Sauce FindSauce(SauceDTO sauceDto)
         {
+            throw new NotImplementedException();
+        }
+
+        public Sauce uploadImage(IFormFile[] files)
+        {
+            List<SauceDTO> sauceDTO = new List<SauceDTO>();
+
+            foreach (IFormFile file in files)
+            {
+                try
+                {
+                    var FileMetaData = new Google.Apis.Drive.v3.DriveService();
+                }
+                catch (IOException e)
+                {
+                    return null;
+                }
+            }
             throw new NotImplementedException();
         }
     }
