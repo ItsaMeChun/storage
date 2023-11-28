@@ -14,5 +14,8 @@ namespace hcode.Service
         bool Delete(int id);
 
         bool Update(int id, SauceDTO sauce);
+
+        Sauce FindSauce(SauceDTO sauceDto);
+
     }
 }

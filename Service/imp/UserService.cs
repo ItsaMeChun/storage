@@ -8,69 +8,68 @@ namespace hcode.Service.imp
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<User> _authorRepository;
-
+        private readonly IRepository<User> _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly UserSecurity userSecurity;
 
-        public UserService(IRepository<User> authorRepository, IConfiguration configuration, IMapper mapper)
+        public UserService(IRepository<User> userRepository, IConfiguration configuration, IMapper mapper)
         {
-            this._authorRepository = authorRepository;
+            this._userRepository = userRepository;
             this._configuration = configuration;
             this._mapper = mapper;
             userSecurity = new UserSecurity(_configuration);
         }
 
-        public bool Add(UserDTO author)
+        public bool Add(UserDTO user)
         {
-            author.Password = userSecurity.MD5Hash(author.Password);
-            var authorMapper = _mapper.Map<User>(author);
-            var result = _authorRepository.Add(authorMapper);
+            user.Password = userSecurity.MD5Hash(user.Password);
+            var userMapper = _mapper.Map<User>(user);
+            var result = _userRepository.Add(userMapper);
             return result;
         }
 
-        public bool Update(int authorId, UserDTO authorDto)
+        public bool Update(int userId, UserDTO userDto)
         {
-            var author = Get(authorId);
+            var user = Get(userId);
             //lazy to mapp
-            author.Password = userSecurity.MD5Hash(authorDto.Password);
-            author.UserName = authorDto.UserName;
-            author.Email = authorDto.Email;
-            return _authorRepository.Update(author);
+            user.Password = userSecurity.MD5Hash(userDto.Password);
+            user.UserName = userDto.UserName;
+            user.Email = userDto.Email;
+            return _userRepository.Update(user);
         }
 
         public bool Delete(int id)
         {
-            return _authorRepository.Delete(id);
+            return _userRepository.Delete(id);
         }
 
         public User Get(int id)
         {
-            return _authorRepository.FindById(id);
+            return _userRepository.FindById(id);
         }
 
         public IEnumerable<User> GetAll()
         {
-            return _authorRepository.GetAll().OrderBy(p => p.Id);
+            return _userRepository.GetAll().OrderBy(p => p.Id);
         }
 
-        public User FindUser(UserDTO authorDto)
+        public User FindUser(UserDTO userDto)
         {
-            return _authorRepository.Find(user => user.UserName.TrimEnd().ToUpper() == authorDto
-            .UserName.TrimEnd().ToUpper() || user.Email.TrimEnd().ToUpper() == authorDto
+            return _userRepository.Find(user => user.UserName.TrimEnd().ToUpper() == userDto
+            .UserName.TrimEnd().ToUpper() || user.Email.TrimEnd().ToUpper() == userDto
             .Email.TrimEnd().ToUpper());
         }
 
-        public User CheckUserLogin(UserLogin authorDto)
+        public User CheckUserLogin(UserLogin userDto)
         {
-            User user = _authorRepository.Find(user => user.Email.TrimEnd().ToUpper() == authorDto
+            User user = _userRepository.Find(user => user.Email.TrimEnd().ToUpper() == userDto
             .Email.TrimEnd().ToUpper());
             if (user == null)
             {
                 return null;
             }
-            bool checkUser = userSecurity.CompareMD5Hash(authorDto.Password, user.Password);
+            bool checkUser = userSecurity.CompareMD5Hash(userDto.Password, user.Password);
             if (checkUser)
             {
                 return user;
@@ -78,9 +77,9 @@ namespace hcode.Service.imp
             return null;
         }
 
-        public AuthResponse GenerateToken(User author)
+        public AuthResponse GenerateToken(User user)
         {
-            AuthResponse authResponse = new AuthResponse { AccessToken = userSecurity.CreateToken(author), ExpireDate = DateTime.UtcNow.AddMinutes(15) };
+            AuthResponse authResponse = new AuthResponse { AccessToken = userSecurity.CreateToken(user), ExpireDate = DateTime.UtcNow.AddMinutes(15) };
             return authResponse;
         }
     }
